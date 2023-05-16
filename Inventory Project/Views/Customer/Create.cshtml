@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Image>
+@{
+    ViewData["Title"] = "Create";
+}
+
+@*<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="Customer">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">New Customer</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" asp-controller="Customer"  >
+
+                <div class="row mb-2">
+                    <div class="col-9">
+                        <div class="mb-2">
+                            <label>Company Name</label>
+                            <input type="text" asp-for="CompanyName" class="form-control" />
+                            <span asp-validation-for="CompanyName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label>Contact Name</label>
+                            <input type="text" asp-for="ContactName" class="form-control" />
+                            <span asp-validation-for="ContactName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label>Address</label>
+                            <input id="richEditor" asp-for="Address" class="form-control" rows="8"></input>
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label>Phone Number</label>
+                            <input id="richEditor" asp-for="PhoneNumber" class="form-control" rows="8"></input>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+<form id="fileUploadForm" method="post" enctype="multipart/form-data" asp-controller="Customer" asp-action="UploadFile">
+    Upload file:
+    <input type="file" id="uploadFile" name="uploadFile" />
+    <input type="submit" value="Upload" />
+
+    @*<div>
+        <br />
+        <div id="messageDiv" style="font-weight:bold; color:green"></div>
+        <br />
+        File Name: <strong><span id="fileNameSpan"></span></strong>
+        <br />
+        File Size: <strong><span id="fileSizeSpan"></span></strong>
+    </div>*@
+    @foreach(var img in Model)
+    {
+        <img class="img-fluid" src="~/image/@img.img" style="object-fit:cover; height:100%; width:100%">
+    }
+
+</form>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $("#fileUploadForm").submit(function (e) {
+                e.preventDefault();
+
+                var data = new FormData();
+                data.append("formFile", $("#uploadFile")[0].files[0]);
+
+                $.ajax({
+                    type: 'post',
+                    url: "/Customer/UploadFile",
+                    data: data,
+                    processData: false,
+                    contentType: false
+                }).done(function (result) {
+                    if (result.status === "success") {
+                        $("#messageDiv").html("File uploaded successfully");
+                        $("#fileNameSpan").html(result.fileName);
+                        $("#fileSizeSpan").html(result.fileSize);
+                    }
+                    else {
+                        alert(result.status);
+                    }
+                });
+            });
+        })
+    </script>
+}
+

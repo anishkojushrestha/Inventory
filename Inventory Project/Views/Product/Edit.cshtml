@@ -1,0 +1,19 @@
+﻿@model Product
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="ProductCategory">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">New Product</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" asp-controller="Product">
+
+                @Html.EditorForModel()
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Product>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <p class="mb-4">
+        DataTables is a third party plugin that is used to generate the demo table below.
+        For more information about DataTables, please visit the <a target="_blank"
+                                                                   href="https://datatables.net">official DataTables documentation</a>.
+    </p>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+        </div>
+        <div class="card-body">
+            <a asp-action="Create" asp-controller="Product" class="btn btn-primary">Add New Product</a>
+
+            <div class="table-responsive">
+                <table class="table table-stripped table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Category Name</th>
+                            <th scope="col">Unit Name</th>
+                            <th scope="col">Product Unit</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot></tfoot>
+                    <tbody>
+        @foreach (var data in Model)
+        {
+            <tr>
+
+                <td>@data.ProductName</td>
+                <td>@data.Category.CategoryName</td>
+                <td>@data.Unit.UnitName</td>
+                <td>@data.UnitPrice</td>
+                <td>
+                    <a asp-action="Edit" asp-controller="Product" asp-route-id="@data.Id" class="btn btn-warning">
+                        <i class="fa fa-pencil"></i>
+                        Edit
+                    </a>
+                    <a asp-action="Details" asp-controller="Product" asp-route-id="@data.Id" class="btn btn-warning">
+                        <i class="fa fa-eye"></i>
+                        Details
+                    </a>
+                    <a asp-action="Delete" asp-controller="Product" asp-route-id="@data.Id" class="btn btn-warning">Delete</a>
+                </td>
+            </tr>
+        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<table class="table">
+    <thead>
+        
+    </thead>
+    <tbody>
+        
+    </tbody>
+</table>
+

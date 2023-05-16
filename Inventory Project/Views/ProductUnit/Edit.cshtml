@@ -1,0 +1,50 @@
+﻿@model ProductUnit
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="ProductUnit">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">Edit Product Unit</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" asp-controller="ProductUnit">
+
+                <div class="row mb-2">
+                    <div class="col-9">
+                        <div class="mb-2">
+                            <label>Unit Rate</label>
+                            <input type="text" asp-for="UnitRate" class="form-control" />
+                            <span asp-validation-for="UnitRate" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+
+                            <div class="dropdown">
+                                <label>Product Name</label>
+                                <select asp-for="ProductId" asp-items="ViewBag.ProductId" class="form-control">
+                                    <option disabled selected>--select Unit--</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" asp-for="isDefault" class="form-check-input" id="exampleCheck1">
+                            <label class="form-check-label" for="exampleCheck1">Is Default</label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

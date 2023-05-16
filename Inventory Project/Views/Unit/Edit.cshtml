@@ -1,0 +1,39 @@
+﻿@model Unit
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="Unit">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">Edit Unit</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Edit" asp-controller="Unit">
+
+                <div class="row mb-2">
+                    <div class="col-9">
+                        <div class="mb-2">
+                            <label>Unit Name</label>
+                            <input type="text" asp-for="UnitName" class="form-control" />
+                            <span asp-validation-for="UnitName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-2">
+                            <label>Base Ratio</label>
+                            <input type="text" asp-for="BaseRatio" class="form-control" />
+                            <span asp-validation-for="BaseRatio" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mb-2">
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

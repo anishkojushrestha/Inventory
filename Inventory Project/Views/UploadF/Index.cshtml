@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Customer>
+<form id="fileUploadForm" method="post" enctype="multipart/form-data" asp-controller="UploadF" asp-action="FileUpload">
+    Upload file:
+    <input type="file" id="uploadFile" name="uploadFile" />
+    <input type="submit" value="Upload" />
+
+    <div>
+        <br />
+        <div id="messageDiv" style="font-weight:bold; color:green"></div>
+        <br />
+        File Name: <strong><span id="fileNameSpan"></span></strong>
+        <br />
+        File Size: <strong><span id="fileSizeSpan"></span></strong>
+    </div>
+</form>
+
+@*
+<div>
+    @foreach(var cus in Model)
+    {
+        <img class="img-fluid" src="~/upload/@cus.FileName" style="object-fit:cover; height:100%; width:100%">
+    }
+</div>*@
+@section Scripts{
+    <script>
+        $(function () {
+            $("#fileUploadForm").submit(function (e) {
+                e.preventDefault();
+
+                var data = new FormData();
+                data.append("formFile", $("#uploadFile")[0].files[0]);
+
+                $.ajax({
+                    type: 'post',
+                    url: "/UploadF/FileUpload",
+                    data: data,
+                    processData: false,
+                    contentType: false
+                }).done(function (result) {
+                    if (result.status === "success") {
+                        $("#messageDiv").html("File uploaded successfully");
+                        $("#fileNameSpan").html(result.fileName);
+                        $("#fileSizeSpan").html(result.fileSize);
+                    }
+                    else {
+                        alert(result.status);
+                    }
+                });
+            });
+        })
+    </script>
+}

@@ -1,0 +1,264 @@
+﻿@model IEnumerable<Unit>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+     <div class="card shadow mb-4">
+        <div class="card-body">
+             <div class="card-body">
+            <form>
+                        <input type="hidden" id="unitId" class="form-control" />
+
+                        <div class="mb-2">
+                            <label>Unit Name</label>
+                            <input type="text" id="unitname" class="form-control" />
+                        </div>
+                        <div class="mb-2">
+                            <label>Base Ratio</label>
+                            <input type="text" id="baseratio" class="form-control" />
+                            @*<span asp-validation-for="BaseRatio" class="text-danger"></span>*@
+                        </div>
+                        
+                   
+
+                
+                <div class="mb-2">
+                    <button type="submit" onclick="BtnClick()" id="add" class="btn btn-primary w-100">Save</button>
+                </div>
+                <div class="mb-2">
+                    <button type="submit" onclick="EditBtnClick()" id="edit" class="btn btn-primary w-100">Update</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Unit Table</h6>
+        </div>
+        <div class="card-body">
+           @* <a asp-action="Create" asp-controller="Unit" class="btn btn-primary">Add New Unit</a>*@
+
+            <div class="table-responsive">
+                <table class="table table-bordered"  width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Unit ID</th>
+                            <th>Unit Name</th>
+                            <th>Base Ratio</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+
+                    </tbody>
+                    
+                </table>
+                <script id="row-template" type="text/x-mustache-template">
+                   {{#data}}
+                    <tr>
+                        <td>{{id}}</td>
+                        <td>{{unitName}}</td>
+                        <td>{{baseRatio}}</td>
+                    </tr>
+                    {{/data}}
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    
+    <script type="text/javascript">
+        $("#edit").hide();
+        ﻿var dataTable;
+        $(document).ready(function () {
+            //loadDataTable();
+            $.ajax({
+              url: "/Unit/GetAll",
+              type: "GET",
+              dataType: "json",
+              success: function(res) {
+               
+                var template = $("#row-template").html();
+                console.log(res);
+                var srcData = res.data;
+                var rendered = mustache.render(template, res);
+                 console.log(rendered);
+                $("#table-body").html(rendered);
+              }
+            });
+        });
+
+
+//function loadDataTable() {
+//    dataTable = $('#dataTable').DataTable({
+//        "ajax": {
+//            "url":"/Unit/GetAll"
+//        },
+//        "columns": [
+//            { "data": "id",  },
+//            { "data": "unitName",  },
+//            { "data": "baseRatio", },
+//            {
+//                "data": "id",
+//                "render": (data) => {
+//                    return `
+                    
+//                        <a class="btn btn-warning" onClick="EditClick('${data}')" >Edit</a>
+//                          <a href="#" class="btn btn-danger" onClick="DeleteClick('${data}')">Delete</a>
+//`
+//                }
+//            },
+
+//            ]
+//        });
+
+        
+//}
+//add
+        function BtnClick(){
+            var unitname = $("#unitname").val();
+            var baseratio = $("#baseratio").val();
+
+            var obj = {
+                UnitName : unitname,
+                BaseRatio : baseratio
+            }
+            $.ajax({
+                url:"/Unit/AddUnit",
+                method: "POST",
+                data:obj,
+                success: function(data){
+                    data = JSON.parse(data);
+                    loadDataTable().reload();
+                    //if(data != null){
+                    //    location.reload();
+                        
+                    //}
+                    
+                    console.log(data);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+
+            })
+        }
+        //function SubmitForm(obj){
+        //    $.ajax({
+        //        url:"/Unit/AddUnit",
+        //        method: "POST",
+        //        data:obj,
+        //        success: function(data){
+        //            data = JSON.parse(data);
+        //            if(data != null){
+        //                location.reload();
+        //            }
+                    
+        //            console.log(data);
+        //        },
+        //        error:function(e){
+        //            console.log(e);
+        //        }
+
+        //    })
+        //}
+
+        //Edit
+        function EditClick(id){
+            $.ajax({
+                url:'/Unit/EditUnit?id=' + id,
+                type:"GET", 
+                contentType: "application/json;charset=UTF-8",  
+                dataType: "json", 
+                success: function(data){
+                    Id = data.id;
+                    $('#unitId').val(data.id);
+                    $("#unitname").val(data.unitName);
+                    $("#baseratio").val(data.baseRatio);
+                    $("#edit").show();
+                    $("#add").hide();
+                }
+            })
+        }
+
+        function EditBtnClick(){
+            var id = $('#unitId').val();
+            alert(id);
+            var unitname = $("#unitname").val();
+            var baseratio = $("#baseratio").val();
+
+            var obj = {
+                Id : id,
+                UnitName : unitname,
+                BaseRatio : baseratio,
+            }
+
+            $.ajax({
+                url:"/Unit/EditUnit",
+                method: "POST",
+                data:obj,
+                success: function(data){
+                    data = JSON.parse(data)
+                    if(data != null){
+                        location.reload();
+                        alert("Unit Edited"); 
+                    }else{
+                        alert("Error"); 
+                    }
+                    console.log(data);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+
+            })
+        }
+        //function EditForm(obj){
+        //    $.ajax({
+        //        url:"/Unit/EditUnit",
+        //        method: "POST",
+        //        data:obj,
+        //        success: function(data){
+        //            data = JSON.parse(data)
+        //            if(data != null){
+        //                location.reload();
+        //                alert("Unit Edited"); 
+        //            }else{
+        //                alert("Error"); 
+        //            }
+        //            console.log(data);
+        //        },
+        //        error:function(e){
+        //            console.log(e);
+        //        }
+
+        //    })
+        //}
+       
+
+        function DeleteClick(id){
+            $.ajax({
+                url:'/Unit/DeleteUnit?id=' + id,
+                type:"POST",
+                contentType: "application/json;charset=UTF-8",  
+                dataType: "json", 
+                data:{Id:id},
+                success:
+                function (data){
+                    if(data != null){
+                        location.reload();
+                        alert("Unit Deleted")
+                    }
+                }
+                
+            })
+        }
+    </script>
+    
+}

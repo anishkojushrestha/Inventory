@@ -1,0 +1,130 @@
+﻿@model Supplier
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="Supplier">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">Add Supplier</h4>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" asp-controller="Supplier">
+                <div class="mb-3">
+                    <label for="supplier.CompanyName" class="form-label">Company Name</label>
+                    <input name="supplier.CompanyName" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="supplier.ContactName" class="form-label">Contact Name</label>
+                    <input name="supplier.ContactName" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="supplier.Address" class="form-label">Address</label>
+                    <input name="supplier.Address" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="supplier.PhoneNumber" class="form-label">PhoneNumber</label>
+                    <input name="supplier.PhoneNumber" class="form-control">
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <h4>Product</h4>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="float-right">
+                                <input type="button" value="Add more" class="btn btn-primary" id="addmorebtn" />
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <div class="MultipleRecord">
+                                <div class="row duplicate-row">
+                                    <input type="hidden" name="supplier.product.index" value="A1" />
+                                    <div class="col-xl-3">
+                                        <label for=" ">ProductName</label>
+                                        <input type="text" name="supplier.product[A1].ProductName" id="" class="form-cotrol" />
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <label for=" ">CategoryName</label>
+                                        <input type="text" name="supplier.product[A1].Category" id="" class="form-cotrol" />
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <label for=" ">UnitName</label>
+                                        <input type="text" name="supplier.product[A1].UnitName" id="" class="form-cotrol" />
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <label for=" ">UnitPrice</label>
+                                        <input type="text" name="supplier.product[A1].UnitPrice" id="" class="form-cotrol" />
+                                    </div>
+                                    @*<input type="button" value="del" class="btn btn-danger btn-remove"/>*@
+                                    <div id="TextBoxContainer">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<template id="tmplAddItem" class="hidden hide">
+    <div class="row duplicate-row">
+        <input type="hidden" name="supplier.product.index" value="A{index}" />
+        <div class="col-xl-3">
+            <label for=" ">ProductName</label>
+            <input type="text" name="supplier.product[A{index}].ProductName" id="" class="form-cotrol" />
+        </div>
+        <div class="col-xl-3">
+            <label for=" ">CategoryName</label>
+            <input type="text" name="supplier.product[A{index}].Category" id="" class="form-cotrol" />
+        </div>
+        <div class="col-xl-3">
+            <label for=" ">UnitName</label>
+            <input type="text" name="supplier.product[A{index}].UnitName" id="" class="form-cotrol" />
+        </div>
+        <div class="col-xl-3">
+            <label for=" ">UnitPrice</label>
+            <input type="text" name="supplier.product[A{index}].UnitPrice" id="" class="form-cotrol" />
+        </div>
+        <input type="button" value="del" class="btn btn-danger btn-remove" onclick="RemoveTextBox(this)" />
+    </div>
+</template>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var i = 2;
+        $("#addmorebtn").click(function () {
+
+            var div = $("<div />");
+            var value = "";
+
+            $tmp1 = $('#tmplAddItem').html();
+            $tmp1 = $tmp1.replace(/{index}/g, i);
+            div.html($tmp1);
+            $("#TextBoxContainer").append(div);
+            i++;
+        });
+
+        function RemoveTextBox(button) {
+            $(button).parent().remove();
+        }
+
+        //$(document).on('click','.btn-remove',function()
+        //{
+        //    if($(".MultipleRecord .duplicate-row").lenght > 1)
+        //    {
+        //        $(this).parents(".duplicate-row").remove();
+        //    }
+        //});
+    });
+</script>

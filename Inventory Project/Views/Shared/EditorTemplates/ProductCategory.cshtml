@@ -1,0 +1,12 @@
+﻿@model ProductCategory
+
+<div class="row mb-2">
+    <div class="col-9">
+        <label>Category Name</label>
+        <input type="text" asp-for="CategoryName" class="form-control" />
+        <span asp-validation-for="CategoryName" class="text-danger"></span>
+    </div>
+</div>
+<div class="mb-2">
+    <button type="submit" class="btn btn-primary w-100">Save</button>
+</div>

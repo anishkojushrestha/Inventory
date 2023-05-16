@@ -1,0 +1,179 @@
+﻿@model IEnumerable<ProductCategory>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container-fluid">
+     <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Add Product Category</h6>
+        </div>
+             <div class="card-body">
+                <form>      
+                    <input type="hidden" id="categoryId" class="form-control" />
+
+                    <div class="mb-2">
+                         <label>Category Name</label>
+                         <input type="text" id="categoryName" class="form-control" />
+                    </div>
+                                      
+                    <div class="mb-1">
+                        <button type="submit" onclick="BtnClick()" id="add" class="btn btn-primary w-100">Add</button>
+                    </div>
+                     <div class="mb-2">
+                        <button type="submit" onclick="EditForm()" id="edit" class="btn btn-primary w-100">Update</button>
+                    </div>
+                </form>
+             </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Category Table</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Category Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                  
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        ﻿var dataTable;
+        $(document).ready(function () {
+            loadDataTable();
+        });
+        $("#edit").hide();
+
+        function loadDataTable() {
+            dataTable = $('#dataTable').DataTable({
+                "ajax": {
+                    "url":"/ProductCategory/GetAll"
+                },
+                "columns": [
+                    { "data": "id"},
+                    { "data": "categoryName",  },
+                    {
+                        "data": "id",
+                        "render": (data) => {
+                            return `
+                               <a class="btn btn-warning" onClick="EditClick('${data}')" >Edit</a>
+                                <a href="#" class="btn btn-danger" onClick="DeleteClick('${data}')">Delete</a>
+        `
+                        }
+                    },
+
+                ]
+             });       
+        }
+        //add
+        function BtnClick(){
+            var categoryName = $("#categoryName").val();
+
+            var obj = {
+                categoryName : categoryName
+            }
+            SubmitForm(obj);
+        }
+        function SubmitForm(obj){
+            $.ajax({
+                url:"/ProductCategory/AddCategory",
+                method: "POST",
+                data:obj,
+                success: function(data){
+                    data = JSON.parse(data)
+                    console.log(data);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+
+            })
+        }
+
+         //Edit
+        function EditClick(id){
+            $.ajax({
+                url:'/ProductCategory/EditCategory?id=' + id,
+                type:"GET", 
+                contentType: "application/json;charset=UTF-8",  
+                dataType: "json", 
+                success: function(data){
+                    Id = data.id;
+                    $("#categoryId").val(data.id);
+                    $("#categoryName").val(data.categoryName);
+                    $("#edit").show();
+                    $("#add").hide();
+                }
+            })
+        }
+
+        //function EditBtnClick(){
+        //    var id =$('#categoryId').val();
+        //    var categoryName = $("#categoryName").val();
+        //    var obj = {
+        //        id :id,
+        //        categoryName : categoryName,
+        //    }
+        //    EditForm(obj);
+        //}
+
+        function EditForm(){
+            var id =$('#categoryId').val();
+            var categoryName = $("#categoryName").val();
+            var obj = {
+                id : id,
+                categoryName : categoryName,
+            }
+            $.ajax({
+                url:"/ProductCategory/EditCategory",
+                method: "POST",
+                data:obj,
+                success: function(data){
+                    data = JSON.parse(data)
+                    if(data != null){
+                        location.reload();
+                        alert("Category Edited"); 
+                    }else{
+                        alert("Error"); 
+                    }
+                    console.log(data);
+                },
+                error:function(e){
+                    console.log(e);
+                }
+
+            })
+        }
+
+         function DeleteClick(id){
+            $.ajax({
+                url:'/ProductCategory/DeleteCategory?id=' + id,
+                type:"POST",
+                contentType: "application/json;charset=UTF-8",  
+                dataType: "json", 
+                data:{Id:id},
+                success:
+                function (data){
+                    if(data != null){
+                        location.reload();
+                        alert("Category Deleted")
+                    }
+                }
+                
+            })
+        }
+        
+    </script>
+}

@@ -1,0 +1,22 @@
+﻿@model Product
+<div class="row mb-2">
+    <div class="col-9 mb-2">
+        <label>Category ID</label>
+        <label>@Model.Id</label>
+    </div>
+    <div class="col-9 mb-2">
+        <label>Product Name</label>
+        <label>@Model.ProductName</label>
+    </div>
+    <div class="col-9 mb-2">
+        <label>Category Name</label>
+        <label>@Model.Category.CategoryName</label>
+    </div>
+    <div class="col-9 mb-2">
+        <label>Unit Name</label>
+        <label>@Model.Unit.UnitName</label>
+    </div>
+
+</div>
+
+

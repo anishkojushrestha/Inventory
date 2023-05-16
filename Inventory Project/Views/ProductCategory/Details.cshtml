@@ -1,0 +1,20 @@
+﻿@model ProductCategory
+@{
+    ViewData["Title"] = "Details:: " + Model.CategoryName;
+}
+
+<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="Post">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">New Post</h4>
+        </div>
+        <div class="card-body">
+            @Html.DisplayForModel()
+        </div>
+    </div>
+</div>
+
+
+
+

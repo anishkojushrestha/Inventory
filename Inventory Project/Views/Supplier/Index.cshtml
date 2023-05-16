@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Supplier>
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Supplier</h1>
+   
+
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Supplier Table</h6>
+        </div>
+        <div class="card-body">
+            <a asp-action="Create" asp-controller="Supplier"class="btn btn-primary">Add New Supplier</a>
+
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Company Name</th>
+                            <th>ContactName</th>
+                            <th>Address</th>
+                            <th>Phone Number</th>
+                            <th>Created Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                       @* <tr>
+                            <th>Company Name</th>
+                            <th>Contact Name</th>
+                            <th>Phone Number</th>
+                            <th>Address</th>
+                            <th>Created Date </th>
+                            <th>Actions</th>
+                        </tr>*@
+                    </tfoot>
+                    <tbody>
+                        @foreach(var data in Model)
+                        {
+                            <tr>
+                            <td>@data.CompanyName</td>
+                            <td>@data.ContactName</td>
+                            <td>@data.Address</td>
+                            <td>@data.PhoneNumber</td>
+                            <td>@data.CreatedDate</td>
+                            <td>
+                                    <a asp-action="Edit" asp-controller="Supplier" asp-route-id="@data.Id" class="btn btn-success">Edit</a>
+                                    <a asp-action="Delete" asp-controller="Supplier" asp-route-id="@data.Id" class="btn btn-danger">Delete</a>
+                </td>
+                        </tr>
+                        }
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+

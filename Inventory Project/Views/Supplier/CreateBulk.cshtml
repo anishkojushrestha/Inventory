@@ -1,0 +1,57 @@
+﻿@model Supplier
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container-fluid">
+    <a class="btn btn-primary mb-1" asp-action="Index" asp-controller="Supplier">Go Back</a>
+    <div class="card">
+        <div class="card-header bg-primary">
+            <h4 class="card-title text-white">Add Supplier</h4>
+        </div>
+        <div class="card-body">
+            <form action="@Url.Action("CreateBulk", "supplier")" method="post">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <input type="text" name="Data.Name" value="XYZ">
+                    <input type="text" name="Data.Address" value="XYZ">
+                    <input type="text" name="Data.Mobile" value="XYZ">
+                    <select name="Data.ProdIds[]" multiple>
+                        <option value="1">Prod 1</option>
+                        <option value="2">Prod 2</option>
+                        <option value="3">Prod 3</option>
+                        <option value="4">Prod 4</option>
+                    </select>
+                    <select name="Data.ProdRate[]" multiple>
+                        <option value="100">Prod 1</option>
+                        <option value="200">Prod 2</option>
+                        <option value="300">Prod 3</option>
+                        <option value="400">Prod 4</option>
+                    </select>
+
+                    <input type="text" name="Data.Data.ChildName" value="Child 1">
+                    <input type="text" name="Data.Data.ChildAdd" value="Child 1 Add">
+                    <input type="text" name="Data.Data.ChildMobile" value="Child 1 Mobile">
+
+                    <input type="hidden" name="Data.DataList.index" value="A1" />
+                    <input type="text" name="Data.DataList[A1].ChildName" value="XYZ">
+                    <input type="text" name="Data.DataList[A2].ChildAdd" value="XYZ">
+                    <input type="text" name="Data.DataList[A1].ChildMobile" value="XYZ">
+
+                    <input type="hidden" name="Data.DataList.index" value="A2" />
+                    <input type="text" name="Data.DataList[A2].ChildName" value="XYZ">
+                    <input type="text" name="Data.DataList[A1].ChildAdd" value="XYZ">
+
+                    <input type="hidden" name="Data.DataList.index" value="A9" />
+                    <input type="text" name="Data.DataList[A9].ChildMobile" value="XYZ">
+                    <input type="text" name="Data.DataList[A9].ChildAdd" value="XYZ">
+
+
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
